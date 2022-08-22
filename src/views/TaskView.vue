@@ -198,6 +198,7 @@ export default {
 				right: right,
 			}
 			this.relations.push(relation);
+			localStorage.relations = JSON.stringify(this.relations);
 			this.moveItemInArray(left, right);
 			setTimeout(() => {
 				this.updateLines();
