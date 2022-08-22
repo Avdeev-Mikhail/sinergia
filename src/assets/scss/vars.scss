@@ -1,0 +1,66 @@
+@use 'sass:math';
+
+$max-width: 1920;
+$max-width-container: 1200;
+
+@function rem($px, $font-size: 16) {
+	$result: math.div($px, $font-size) + rem;
+	@return $result;
+}
+
+@function em($px) {
+	$result: math.div($px, $font-size) + em;
+	@return $result;
+}
+
+$max-width-container-px: $max-width-container + px;
+
+@mixin adaptiv($property, $start-size, $min-size, $type, $custom-width:"") {
+	$add-size: $start-size - $min-size;
+	@if $type == 1 {
+		#{$property}: rem($start-size);
+		@media (max-width: #{$max-width-container-px}) {
+			#{$property}: calc(#{rem($min-size)} + #{$add-size} * ((100vw - 320px) / #{$max-width-container - 320}));
+		}
+	}
+	@else if $type == 2 {
+		#{$property}: rem($start-size);
+		@media (min-width: #{$max-width-container-px}) {
+			#{$property}: calc(#{rem($min-size)} + #{$add-size} * ((100vw - 320px) / #{$max-width - 320}));
+		}
+	}
+	@else if $type == 3 {
+		#{$property}: rem($start-size);
+		@media (max-width: #{$max-width + px}) {
+			#{$property}: calc(#{rem($min-size)} + #{$add-size} * ((100vw - #{$custom-width + px}) / #{$max-width - $custom-width}));
+		}
+		@media (max-width: #{$custom-width + px}) {
+			#{$property}: rem($min-size);
+		}
+	}
+	@else if $type == 4 {
+		#{$property}: rem($start-size);
+		@media (max-width: #{$max-width + px}) {
+			#{$property}: calc(#{rem($min-size)} + #{$add-size} * ((100vw - 320px) / #{$max-width - 320}));
+		}
+	}
+	@else if $type == 5 {
+		#{$property}: rem($start-size);
+		@media (max-width: #{$custom-width + px}) {
+			#{$property}: calc(#{rem($min-size)} + #{$add-size} * ((100vw - 320px) / #{$custom-width - 320}));
+		}
+	}
+	@else if $type == 6 {
+		#{$property}: rem($start-size);
+		@media (max-width: #{$max-width + px}) {
+			#{$property}: calc(#{rem($min-size)} + #{$add-size} * ((100vw - #{$custom-width + px}) / #{$max-width - $custom-width}));
+		}
+	}
+	@else {
+		#{$property}: calc(#{rem($min-size)} + #{$add-size} * ((100vw - 320px) / #{$max-width - 320}));
+	}
+}
+
+@mixin line-height($px, $font-size) {
+	line-height: math.div($px, $font-size) * 100%;
+}
